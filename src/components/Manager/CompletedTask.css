@@ -1,0 +1,17 @@
+.completed-task{
+    padding: 30px;
+}
+
+
+
+.completed-task-container {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .completed-task-container p {
+    margin: 0;
+    font-size: 16px;
+  }

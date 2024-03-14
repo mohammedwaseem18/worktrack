@@ -1,0 +1,37 @@
+.leave {
+  padding: 40px;
+}
+
+.received-task-container {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.text-and-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.requester-text {
+  margin: 0;
+}
+
+.button-container {
+  display: flex;
+}
+
+.view-request-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-request-button:hover {
+  background-color: #0056b3;
+}

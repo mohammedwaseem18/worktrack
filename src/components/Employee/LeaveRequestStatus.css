@@ -1,0 +1,17 @@
+.status-task{
+    padding: 30px;
+}
+
+
+
+.status-task-container {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .status-task-container p {
+    margin: 0;
+    font-size: 16px;
+  }

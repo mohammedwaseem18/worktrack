@@ -1,0 +1,61 @@
+/* EmployeeList.css */
+
+.waseem {
+  padding-top: 90px;
+  margin-right: 50px;
+  border: 5px solid black;
+}
+
+/* Responsive table CSS */
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Table CSS */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Table head CSS */
+.table thead th {
+  background-color: #f2f2f2;
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+/* Table body CSS */
+.table tbody td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+/* Table body alternating row color */
+.table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Table responsive CSS for small screens */
+@media screen and (max-width: 600px) {
+  .table-responsive {
+    overflow-x: auto;
+    display: block;
+    width: 100%;
+  }
+  .table thead {
+    display: none;
+  }
+  .table, .table tbody, .table tr, .table td {
+    display: block;
+    width: 100%;
+  }
+  .table tbody tr {
+    margin-bottom: 15px;
+  }
+  .table tbody td {
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+  }
+}
