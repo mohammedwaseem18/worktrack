@@ -1,32 +1,82 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Chat.css";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
-import MicOutlinedIcon from '@mui/icons-material/MicOutlined';
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
-import SendIcon from '@mui/icons-material/Send';
+import SendIcon from "@mui/icons-material/Send";
+import { Avatar } from "@mui/material";
+import { getConversation, getUser } from "../../apiCalls";
+import io from "socket.io-client";
+let socket;
+function Chat({ selectedChat }) {
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
 
-function Chat() {
-  const [input, setInput] = useState(""); // Define state variable 'input'
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add logic to handle form submission
-    console.log("Message sent:", input);
-    setInput(""); // Clear input field after submission
+  const getChats = async () => {
+    const res = await getConversation({ to: selectedChat?.id });
+    setMessages(res.messages);
   };
 
+  const [user, setUser] = useState();
+
+  const getUserDetails = async () => {
+    const res = await getUser();
+    setUser(res.user);
+  };
+  useEffect(() => {
+    getUserDetails();
+    getChats();
+    socket = io("http://localhost:5000", {
+      transports: ["websocket"],
+    });
+    socket.on("chat message", (msg) => {
+      if (msg.to == user.id) {
+        setMessages((prevMessages) => [...prevMessages, msg]);
+      }
+    });
+
+    return () => {
+      socket.off("chat message");
+    };
+  }, [selectedChat]);
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    const msgPayload = {
+      body: message,
+      from: user.id,
+      to: selectedChat.id,
+    };
+    socket.emit("chat message", msgPayload, (data) => {
+      setMessages((prevMessages) => [...prevMessages, data]);
+    });
+    document.getElementById(messages?.[messages.length - 1])?.scrollIntoView();
+    setMessage("");
+    
+  };
+
+  useEffect(() => {
+    document.getElementById(messages?.[messages.length - 1])?.scrollIntoView();
+  }, [messages])
   return (
     <div className="chat">
       <div className="chat_header">
-        <AccountCircleIcon style = {{height:"80px", width:"80px"}} />
+        <Avatar sx={{ width: 50, height: 50 }}>
+          <img
+            height="100%"
+            width="100%"
+            src={selectedChat?.profile_image}
+            alt=""
+          />
+        </Avatar>
         <div className="chat_headerInfo">
-          <h3>waseem</h3>
+          <h3>{selectedChat?.name}</h3>
           <p>Last seen at...</p>
         </div>
 
@@ -39,38 +89,46 @@ function Chat() {
       </div>
 
       <div className="chat_body">
-        <p className="chat_message">
-          <span className="chat_name"> waseem </span>
-          This is a message from waseem 
-        </p>
-
-        <p className="chat_message chat_receiver">
-          <span className="chat_name"> aman</span>
-          This is a message
-        </p>
+        {messages?.map((msg) => (
+          <p
+            id={msg.id}
+            className={`chat_message ${
+              user.id === msg.from && "chat_receiver"
+            }`}
+          >
+            <span className="chat_name">
+              {" "}
+              {msg.from === user.id ? user.name : selectedChat.name}{" "}
+            </span>
+            {msg.body}
+          </p>
+        ))}
       </div>
 
       <div className="chat_footer">
         <InsertEmoticonOutlinedIcon />
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={sendMessage}>
           <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)} // Update input state on change
+            value={message}
+            onChange={(e) => setMessage(e.target.value)} // Update input state on change
             placeholder="Type a message"
             type="text"
           />
 
-
-
-            <SendIcon style={{ fontSize: "24px", marginTop:"10px", cursor:"pointer", color:"#192a56"}} />
-         
+          <SendIcon
+            style={{
+              fontSize: "24px",
+              marginTop: "10px",
+              cursor: "pointer",
+              color: "#192a56",
+            }}
+          />
         </form>
-        <MicOutlinedIcon/>
+        <MicOutlinedIcon />
       </div>
     </div>
   );
 }
 
 export default Chat;
-

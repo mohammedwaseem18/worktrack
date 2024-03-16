@@ -1,4 +1,4 @@
-const BASE_URL = "https://ems-backend-w5vv.onrender.com";
+const BASE_URL = "http://localhost:5000";
 const callApi = async (endpoint, method, body, token) => {
   try {
     const headers = {
@@ -39,6 +39,9 @@ export const getAllMentees = async () => {
 export const getUser = async () => {
   return callApi("auth/get-user", "GET", null, localStorage.getItem("user-token"));
 };
+export const getManager = async () => {
+  return callApi("auth/get-manager", "GET", null, localStorage.getItem("user-token"));
+};
 
 export const assignTask = async (body) => {
   return callApi("ems/assign-task", "POST", body, localStorage.getItem("user-token"));
@@ -74,4 +77,8 @@ export const rejectLeave = async (body) => {
 
 export const getleaveStatus = async () => {
   return callApi("ems/get-leaves-status", "GET", null, localStorage.getItem("user-token"));
+};
+
+export const getConversation = async (body) => {
+  return callApi("chat/get-user-chat-messages", "POST", body, localStorage.getItem("user-token"));
 };
