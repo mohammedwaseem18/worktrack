@@ -32,7 +32,7 @@ function Chat({ selectedChat }) {
   useEffect(() => {
     getUserDetails();
     getChats();
-    socket = io("http://localhost:5000", {
+    socket = io("https://ems-backend-w5vv.onrender.com", {
       transports: ["websocket"],
     });
     socket.on("chat message", (msg) => {

@@ -32,7 +32,7 @@ function ManagerSignup() {
     formDataToSend.append("image", image);
 
     const response = await fetch(
-      "http://localhost:5000/auth/manager-signup",
+      "https://ems-backend-w5vv.onrender.com/auth/manager-signup",
       {
         method: "POST",
         body: formDataToSend,

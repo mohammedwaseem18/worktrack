@@ -29,7 +29,7 @@ function AddEmployee() {
     formDataToSend.append("position", formData.position);
     formDataToSend.append("image", image);
 
-    const response = await fetch("http://localhost:5000/auth/add-employee", {
+    const response = await fetch("https://ems-backend-w5vv.onrender.com/auth/add-employee", {
       headers: {
             "x-auth-token": localStorage.getItem("user-token"),
           },

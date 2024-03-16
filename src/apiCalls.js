@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://ems-backend-w5vv.onrender.com";
 const callApi = async (endpoint, method, body, token) => {
   try {
     const headers = {
